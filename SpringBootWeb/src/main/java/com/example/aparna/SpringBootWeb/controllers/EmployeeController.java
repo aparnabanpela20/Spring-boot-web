@@ -2,7 +2,7 @@ package com.example.aparna.SpringBootWeb.controllers;
 
 import com.example.aparna.SpringBootWeb.dto.EmployeeDTO;
 import com.example.aparna.SpringBootWeb.entities.EmployeeEntity;
-import com.example.aparna.SpringBootWeb.repositories.EmployeeRepository;
+import com.example.aparna.SpringBootWeb.services.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -17,26 +17,25 @@ public class EmployeeController {
 //        return "Secret Message: Aparna";
 //    }
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping(path = "/{employeeId}") //children /employees/{employeeId}
-    public EmployeeEntity getEmployeeById(@PathVariable Long employeeId){
-        return employeeRepository.findById(employeeId).orElse(null);
+    public EmployeeDTO getEmployeeById(@PathVariable Long employeeId){
+        return employeeService.findEmployeeId(employeeId);
     }
 
     @GetMapping //children
-    public List<EmployeeEntity> getEmployeeAge(@RequestParam(required = false) Integer age, @RequestParam(required = false) String sortBy){
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getAllEmployee(@RequestParam(required = false) Integer age, @RequestParam(required = false) String sortBy){
+        return employeeService.getAllEmployee();
     }
 
     @PostMapping
-    public EmployeeEntity addEmployeeData(@RequestBody EmployeeEntity inputEmployee ) {
-
-        return employeeRepository.save(inputEmployee);
+    public EmployeeDTO createNewEmployee(@RequestBody EmployeeEntity inputEmployee ) {
+        return employeeService.createNewEmployee(inputEmployee);
     }
 
     @PutMapping String updateEmployeeId() {
