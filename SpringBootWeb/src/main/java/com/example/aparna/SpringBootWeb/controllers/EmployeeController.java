@@ -3,6 +3,7 @@ package com.example.aparna.SpringBootWeb.controllers;
 import com.example.aparna.SpringBootWeb.dto.EmployeeDTO;
 import com.example.aparna.SpringBootWeb.entities.EmployeeEntity;
 import com.example.aparna.SpringBootWeb.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,7 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody EmployeeEntity inputEmployee ) {
+    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody @Valid EmployeeDTO inputEmployee ) {
         EmployeeDTO employeeDTO = employeeService.createNewEmployee(inputEmployee);
         return new ResponseEntity<>(employeeDTO, HttpStatus.CREATED);
     }

@@ -1,74 +1,38 @@
 package com.example.aparna.SpringBootWeb.dto;
 
+import jakarta.validation.constraints.*;
+import lombok.*;
+
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeDTO {
 
     private Long id;
+
+    @NotBlank(message = "Name of the employee cannot be blank")
+    @Size(min = 3, max = 10)
     private String name;
+
+    @Email(message = "Email should be a valid Email")
     private String email;
+
+    @Positive
+    @Max(value = 60, message = "Age cannot be greater than 60")
+    @Min(value = 18, message = "Age should be greater than 18")
     private Integer age;
+
+    @NotBlank(message = "Role of Employee can not be blank")
+    @Pattern(regexp = "^(ADMIN|USER)$", message = "Role of Employee ca be a USER or ADMIN") //regular expression, has a proper format.
+    private String role; //ADMIN, USER
+
+    @PastOrPresent
     private LocalDate dateOFJoining;
+
+    @AssertTrue
     private Boolean isActive;
 
-    public EmployeeDTO (){
-
-    }
-
-    public EmployeeDTO(Long id, String name, String email, Integer age, LocalDate dateOFJoining, Boolean isActive) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.age = age;
-        this.dateOFJoining = dateOFJoining;
-        this.isActive = isActive;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public LocalDate getDateOFJoining() {
-        return dateOFJoining;
-    }
-
-    public void setDateOFJoining(LocalDate dateOFJoining) {
-        this.dateOFJoining = dateOFJoining;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }
