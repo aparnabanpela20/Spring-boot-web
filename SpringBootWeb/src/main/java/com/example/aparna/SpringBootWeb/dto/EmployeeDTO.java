@@ -1,5 +1,6 @@
 package com.example.aparna.SpringBootWeb.dto;
 
+import com.example.aparna.SpringBootWeb.annotations.EmployeeRoleAnnotation;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -26,7 +27,8 @@ public class EmployeeDTO {
     private Integer age;
 
     @NotBlank(message = "Role of Employee can not be blank")
-    @Pattern(regexp = "^(ADMIN|USER)$", message = "Role of Employee ca be a USER or ADMIN") //regular expression, has a proper format.
+//    @Pattern(regexp = "^(ADMIN|USER)$", message = "Role of Employee ca be a USER or ADMIN") //regular expression, has a proper format.
+    @EmployeeRoleAnnotation
     private String role; //ADMIN, USER
 
     @PastOrPresent
