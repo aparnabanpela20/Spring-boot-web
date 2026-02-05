@@ -2,6 +2,7 @@ package com.example.aparna.SpringBootWeb.services;
 
 import com.example.aparna.SpringBootWeb.dto.EmployeeDTO;
 import com.example.aparna.SpringBootWeb.entities.EmployeeEntity;
+import com.example.aparna.SpringBootWeb.excceptions.ResourceNotFoundException;
 import com.example.aparna.SpringBootWeb.repositories.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,9 @@ public class EmployeeService {
 
     public EmployeeDTO updateEmployeeId(long employeeId, EmployeeDTO employeeDTO) {
         EmployeeEntity employeeEntity = modelMapper.map(employeeDTO, EmployeeEntity.class);
+        if(!isEmployeeExistsbyId(employeeId)){
+            throw new ResourceNotFoundException("EmployeeNotFound");
+        }
         employeeEntity.setId(employeeId);
         EmployeeEntity savedEmployeeEntity = employeeRepository.save(employeeEntity);
         return modelMapper.map(savedEmployeeEntity, EmployeeDTO.class);
@@ -62,7 +66,7 @@ public class EmployeeService {
 
     public boolean deleteEmployeeById(long employeeId) {
         boolean exists = isEmployeeExistsbyId(employeeId);
-        if(!exists) return false;
+        if(!exists) throw new ResourceNotFoundException("EmployeeNotFound");
         employeeRepository.deleteById(employeeId);
         return true;
     }
@@ -70,7 +74,7 @@ public class EmployeeService {
     public EmployeeDTO updatePartialEmployee(long employeeId, Map<String, Object> updates) {
 
         boolean exists = isEmployeeExistsbyId(employeeId);
-        if(!exists) return null;
+        if(!exists) throw new ResourceNotFoundException("EmployeeNotFound");;
 
         EmployeeEntity employeeEntity = employeeRepository.findById(employeeId).get();
         updates.forEach((field, value) -> {

@@ -2,6 +2,7 @@ package com.example.aparna.SpringBootWeb.controllers;
 
 import com.example.aparna.SpringBootWeb.dto.EmployeeDTO;
 import com.example.aparna.SpringBootWeb.entities.EmployeeEntity;
+import com.example.aparna.SpringBootWeb.excceptions.ResourceNotFoundException;
 import com.example.aparna.SpringBootWeb.services.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -35,7 +37,7 @@ public class EmployeeController {
 
         return employDTO.
                 map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1)).
-                        orElse(ResponseEntity.notFound().build());
+                        orElseThrow(() -> new ResourceNotFoundException("Employee Not Found with id " + employeeId));
     }
 
     @GetMapping //children
